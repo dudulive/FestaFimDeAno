@@ -9,10 +9,14 @@ import android.widget.TextView
 import edu.braz.com.br.constants.FimDeAnoConstants
 import edu.braz.com.br.festafimdeano.R
 import edu.braz.com.br.util.SecurityPrefences
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mSecurityPrefences: SecurityPrefences
+    private val SIMPLE_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy")
 
 
     override fun onClick(v: View?) {
@@ -38,11 +42,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         this.mSecurityPrefences = SecurityPrefences(this)
 
         mViewHolder.textToday = findViewById(R.id.text_today) as TextView
-        mViewHolder.textDeysLeft = findViewById(R.id.text_days_left) as TextView
+        mViewHolder.textDaysLeft = findViewById(R.id.text_days_left) as TextView
         mViewHolder.buttonConfirm = findViewById(R.id.button_confirm) as Button
 
         mViewHolder.buttonConfirm.setOnClickListener(this)
-        verifyPresence()
+        this.mViewHolder.textToday.text = SIMPLE_DATE_FORMAT.format(Calendar.getInstance().time)
+
+        val daysLeft = String.format("%s %s", java.lang.String.valueOf(this.getDaysLeftToEndOfYear()), getString(R.string.dias))
+        this.mViewHolder.textDaysLeft.setText(daysLeft)
     }
 
     override fun onResume() {
@@ -60,9 +67,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             this.mViewHolder.buttonConfirm.setText(R.string.nao)
     }
 
+    private fun getDaysLeftToEndOfYear(): Int {
+        val calendarToday = Calendar.getInstance()
+        val today = calendarToday.get(Calendar.DAY_OF_YEAR)
+
+        val calendarLastDay = Calendar.getInstance()
+        val dayDeceber31 = calendarLastDay.getActualMaximum(Calendar.DAY_OF_YEAR)
+
+        return dayDeceber31 - today
+    }
+
     private class ViewHolder{
         lateinit var textToday: TextView
-        lateinit var textDeysLeft: TextView
+        lateinit var textDaysLeft: TextView
         lateinit var buttonConfirm: Button
     }
 }
