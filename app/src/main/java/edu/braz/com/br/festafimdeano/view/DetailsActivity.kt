@@ -1,10 +1,11 @@
-package edu.braz.com.br.festafimdeano
+package edu.braz.com.br.festafimdeano.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import edu.braz.com.br.constants.FimDeAnoConstants
+import edu.braz.com.br.festafimdeano.R
 import edu.braz.com.br.util.SecurityPrefences
 
 
@@ -46,11 +47,7 @@ class DetailsActivity : AppCompatActivity(), View.OnClickListener{
         val extras = intent.extras
         if (extras != null) {
             val presence = extras.getString(FimDeAnoConstants.PRESENCE)
-            if (presence == FimDeAnoConstants.CONFIRMED_WILL_GO) {
-                this.mViewHolder.checkParticipate!!.isChecked = true
-            } else {
-                this.mViewHolder.checkParticipate!!.isChecked = false
-            }
+            this.mViewHolder.checkParticipate.isChecked = (presence == FimDeAnoConstants.CONFIRMED_WILL_GO)
         }
     }
 
